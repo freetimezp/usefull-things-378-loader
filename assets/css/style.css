@@ -9,57 +9,171 @@
 a {
     text-decoration: none;
 }
-
 body {
-    background: #141414;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #080808;
+    overflow: hidden;
+    font-family: sans-serif;
 }
 
-.stroke {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 400px;
-    height: 2px;
-    background: #fff;
+.loader {
+    position: relative;
+    width: 500px;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-.stroke::before {
+#logo {
+    width: 280px;
+    height: 280px;
+    position: relative;
+    z-index: 2;
+}
+
+#logo path {
+    fill: none;
+
+    stroke: #a9ff08;
+    stroke-width: 10;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    filter: drop-shadow(0 0 5px #a9ff08) drop-shadow(0 0 20px #a9ff08) drop-shadow(0 0 50px #a9ff08);
+}
+
+.percent {
+    margin-top: 100px;
+    font-size: 72px;
+    font-weight: 700;
+    color: #a9ff08;
+    text-shadow: 0 0 10px #a9ff08, 0 0 25px #a9ff08;
+}
+
+.progress {
+    width: 100%;
+    height: 10px;
+    margin-top: 25px;
+    border-radius: 999px;
+    background: #111;
+    overflow: hidden;
+    position: relative;
+}
+
+/* subtle inner glow line */
+.progress::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #141414;
-    animation: animate 5s linear infinite;
-    animation-timing-function: cubic-bezier(0.75, 0.04, 0, 0.86);
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(169, 255, 8, 0.15), transparent);
+    animation: shimmer 2.5s linear infinite;
 }
 
-.stroke::after {
-    content: "\f040";
-    font-family: fontAwesome;
-    position: absolute;
-    top: -46px;
-    left: 0;
-    transform: translateX(2px);
-    width: 100%;
-    height: 100%;
-    background: #141414;
-    color: #a9ff08;
-    font-size: 50px;
-    animation: animate 5s linear infinite;
-    animation-timing-function: cubic-bezier(0.75, 0.04, 0, 0.86);
-}
-
-@keyframes animate {
+@keyframes shimmer {
     0% {
-        left: 0;
-    }
-    50% {
-        left: 100%;
+        transform: translateX(-100%);
     }
     100% {
-        left: 0;
+        transform: translateX(100%);
     }
+}
+
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #6eff00, #d5ff5c, #6eff00);
+    background-size: 200% 100%;
+    box-shadow: 0 0 25px rgba(169, 255, 8, 0.6);
+    transition: width 0.15s linear;
+    animation: flow 1.2s linear infinite;
+}
+
+@keyframes flow {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 200% 50%;
+    }
+}
+
+.scanner {
+    position: absolute;
+    width: 320px;
+    height: 4px;
+    background: #a9ff08;
+
+    box-shadow: 0 0 10px #a9ff08, 0 0 25px #a9ff08, 0 0 60px #a9ff08;
+
+    z-index: 1;
+
+    animation: scan 3s ease-in-out infinite;
+}
+
+.scanner::before {
+    content: "";
+    position: absolute;
+    inset: -50px 0;
+
+    background: linear-gradient(to bottom, rgba(169, 255, 8, 0.25), rgba(169, 255, 8, 0.05), transparent);
+
+    filter: blur(20px);
+}
+
+@keyframes scan {
+    0% {
+        top: 50px;
+    }
+
+    50% {
+        top: 300px;
+    }
+
+    100% {
+        top: 50px;
+    }
+}
+
+.status {
+    margin-top: 20px;
+    font-size: 14px;
+    color: rgba(169, 255, 8, 0.7);
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.cta {
+    margin-top: 15px;
+    padding: 12px 24px;
+    border-radius: 999px;
+    border: 1px solid #a9ff08;
+    background: transparent;
+    color: #a9ff08;
+    cursor: pointer;
+
+    opacity: 0;
+    transform: translateY(15px);
+
+    box-shadow: 0 0 10px rgba(169, 255, 8, 0.4);
+    transition: 0.3s ease;
+}
+
+.cta:hover {
+    background: #a9ff08;
+    color: #000;
+    box-shadow: 0 0 25px #a9ff08;
+}
+
+.progress,
+.percent,
+.status,
+.scanner {
+    will-change: transform, opacity;
 }
